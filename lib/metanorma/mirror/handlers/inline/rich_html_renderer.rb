@@ -43,7 +43,7 @@ module Metanorma
           end
 
           def self.render_element(element)
-            complex = Mirror.complex_renderers.lookup(element)
+            complex = Mirror.rich_html_renderers.lookup(element)
             return complex.call(element) if complex
 
             mark_type = Mirror.simple_inline_elements.lookup(element)
