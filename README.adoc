@@ -1,0 +1,41 @@
+= metanorma-mirror
+
+The Mirror format: a lossless JSON projection of a Metanorma document
+as a typed node tree — blocks, inline runs, marks — preserving document
+order, attributes, and provenance. It is the wire contract consumed by
+the SMART document reader and the HTML JS renderer, and it provides the
+`mirror` provenance object embedded in MKO bundles.
+
+== What lives here
+
+* Node models (`Metanorma::Mirror::Model`) — lutaml-model Serializables
+  with key_value mappings; the JSON wire is the contract.
+* The transformer walk, handler registry, and rewriter.
+* Serializers (JSON, YAML) and the output pipeline.
+
+== What does NOT live here
+
+Model knowledge. Which document classes map to which handlers, mark
+types, rich-HTML renderers, and id categories is *registered* by the
+model gems: metanorma-document and metanorma-standoc seed the defaults
+through the registration seams (`Mirror.register_default`,
+`Mirror.mark_builders`, `Mirror.rich_html_renderers`,
+`Mirror.simple_inline_elements`, `Mirror.inline_text_substitutions`,
+`Mirror.semx_elements`, `Mirror.inline_content_iterator`,
+`Mirror::IdStrategy::Positional.register_category`). A new flavor or
+model registers; this gem never changes (OCP).
+
+== Usage
+
+[source,ruby]
+----
+require "metanorma/mirror"
+require "metanorma/document"   # seeds the default registrations
+
+tree = Metanorma::Mirror::Transformer.new.call(model)
+json = Metanorma::Mirror::Serialization::JsonSerializer.serialize(tree)
+----
+
+== License
+
+BSD-2-Clause.
