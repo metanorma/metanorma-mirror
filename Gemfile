@@ -15,5 +15,7 @@ gemspec
 if ENV["METANORMA_CI_EDGE"]
   gem "lutaml-model", github: "lutaml/lutaml-model", branch: "main"
 else
-  gem "lutaml-model", "~> 0.8.0", "< 0.8.20"
+  gem "leptris", "~> 1.9"
+  gem "lutaml-model", "~> 0.8.0", ">= 0.8.22", "< 0.9"
+  gem "moxml", "~> 0.5.30"
 end
