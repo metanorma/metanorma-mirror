@@ -8,6 +8,8 @@ module Metanorma
       autoload :List, "#{__dir__}/handlers/list"
       autoload :Table, "#{__dir__}/handlers/table"
       autoload :Figure, "#{__dir__}/handlers/figure"
+      autoload :Svgmap, "#{__dir__}/handlers/svgmap"
+      autoload :Imagemap, "#{__dir__}/handlers/imagemap"
       autoload :Sourcecode, "#{__dir__}/handlers/sourcecode"
       autoload :Admonition, "#{__dir__}/handlers/admonition"
       autoload :Formula, "#{__dir__}/handlers/formula"
