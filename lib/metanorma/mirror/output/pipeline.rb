@@ -67,7 +67,12 @@ id_strategy: nil)
                 nil
               end
               if Object.const_defined?(new_namespace)
-                return Object.const_get(new_namespace).const_get(:Root)
+                root = Object.const_get(new_namespace).const_get(:Root)
+                # Abstract bases (e.g. Standoc::Document::Root) declare no
+                # root element — they are type-only and cannot parse a
+                # document. Fall through to the concrete standard root.
+                mappings = root.respond_to?(:mappings_for) ? root.mappings_for(:xml) : nil
+                return root if mappings && mappings.root_element
               end
 
               begin
@@ -76,7 +81,12 @@ id_strategy: nil)
                 nil
               end
               class_name = self.class.flavor_map[flavor] || "StandardDocument"
-              Metanorma.const_get(class_name).const_get(:Root)
+              klass = Metanorma.const_get(class_name)
+              mappings = klass.const_get(:Root).respond_to?(:mappings_for) ? klass.const_get(:Root).mappings_for(:xml) : nil
+              # Legacy aliases may point back at the same abstract base.
+              return klass.const_get(:Root) if mappings && mappings.root_element
+
+              Metanorma::StandardDocument.const_get(:Root)
             end
           end
 
